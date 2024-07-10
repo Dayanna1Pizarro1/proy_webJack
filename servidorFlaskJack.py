@@ -4,4 +4,29 @@ Type "help", "copyright", "credits" or "license()" for more information.
 ... 
 ... app = Flask(proy)
 ... app.secret_key = 'superkey123'
-... 
+
+... # Usuarios válidos 
+valid_users = ['admin', 'UsuariotipoA', 'Usuariotipob']
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    username = request.form['username']
+    name = request.form['name']
+    email = request.form['email']
+    message = request.form['message']
+    
+    # Validar usuario
+    if username not in valid_users:
+        flash('Usuario no válido. Por favor, inténtalo de nuevo.')
+        return redirect(url_for('home'))
+    
+    # Lógica para manejar el mensaje, como enviarlo por correo electrónico.
+    return f"Mensaje enviado por {name} ({email}): {message}"
+
+if proy == 'main':
+    app.run(debug=True)
+
